@@ -154,10 +154,242 @@ git --version
 ```bash
 cd ../
 ```
-this command takes us back to the Desktop
+this command takes us back to the Desktop/Root Folder
 
-Go to Github > git-journey > Code > Local > HTTPS
-* copy this link and paste it into the terminal using git clone
+1. Go to Github > git-journey > Code > Local > HTTPS
+   * copy this link and paste it into the terminal using git clone
+   ```bash
+   git clone https://github.com/harryra-git/git-journey.git
+   ```
+2. Check the cloned repository from GitHub
+   ```bash
+   ls
+   ```
+   this should list down two folders: 1. git-journey (from GitHub) and 2. git-one (Local Git)
+3. Go to git-journey and check for ".git" files to verify clone
+   ```bash
+   cd git-journey
+   ls -a
+   ```
+   this should provide the contents from the folder including .git together with the two text files created from GitHub (one.txt and two.txt)
+
+## Tracking Changes (git status)
+1. Open git-journey and edit one.txt (add "1")
+   ```
+   one
+   1 
+   ```
+   Do the same thing with two.txt (add "2")
+   ```
+   two
+   2
+   ```
+2. In the terminal, run git status to check for modified files
+   ```bash
+   git status
+   On branch main
+   Your branch is up to date with 'origin/main'.
+   
+   Changes not staged for commit:
+     (use "git add <file>..." to update what will be committed)
+     (use "git restore <file>..." to discard changes in working directory)
+	   modified:   one.txt
+     modified:   two.txt
+   
+   no changes added to commit (use "git add" and/or "git commit -a")
+   ```
+   this highlights that **one.txt** has been modified
+
+## Staging Changes (git add and git reset)
+**Adding:** The process of moving changes from the working directory to the staging area
+
+**Move everything to the staging area**
 ```bash
-git clone https://github.com/harryra-git/git-journey.git
+git add --all
+git add -A
+```
+
+**Stage the changes only within the current directory**
+```bash
+git add .
+```
+*note:* simplest way to stage all changes is to navigate to root directory and run ```git add .```
+
+**Stage new or modified files (not deleted ones)**
+
+Stages all visible changes except for deleted files
+```bash
+git add *
+```
+
+**Stage files by extension**
+```bash
+git add *[file extension]
+git add *.txt //sample
+```
+*Note:* stages changes it finds in the root folder. it won't include deleted files or files inside subfolders.
+
+**Stage specific file**
+```bash
+git add [fileName].txt //specific file
+git add [folderName]/[filename].txt //file under a folder
+```
+
+**Remove from the staging area and return to working directory**
+```bash
+git reset
+```
+
+**Sample (git add -all and git reset) using git-journey**
+```bash
+harryra@Harrys-Mac-mini git-journey % git add --all
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   myFolder/three.txt
+	modified:   one.txt
+	modified:   two.txt
+
+harryra@Harrys-Mac-mini git-journey % git reset
+Unstaged changes after reset:
+M	one.txt
+M	two.txt
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   one.txt
+	modified:   two.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	myFolder/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+**Sample (git add -A and git reset) using git-journey**
+```bash
+harryra@Harrys-Mac-mini git-journey % git add -A
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   myFolder/three.txt
+	modified:   one.txt
+	modified:   two.txt
+
+harryra@Harrys-Mac-mini git-journey % git reset
+Unstaged changes after reset:
+M	one.txt
+M	two.txt
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   one.txt
+	modified:   two.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	myFolder/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+**Sample (git add . and git reset) using git-journey**
+```bash
+harryra@Harrys-Mac-mini git-journey % git add .
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   myFolder/three.txt
+	modified:   one.txt
+	modified:   two.txt
+
+harryra@Harrys-Mac-mini git-journey % git reset
+Unstaged changes after reset:
+M	one.txt
+M	two.txt
+harryra@Harrys-Mac-mini git-journey % cd myFolder
+harryra@Harrys-Mac-mini myFolder % git add .
+harryra@Harrys-Mac-mini myFolder % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   three.txt
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ../one.txt
+	modified:   ../two.txt
+
+harryra@Harrys-Mac-mini myFolder % git reset
+Unstaged changes after reset:
+M	one.txt
+M	two.txt
+```
+
+**Sample (git add . and git reset) using git-journey**
+
+*delete two.txt and create four.txt with the value "four"*
+```bash
+harryra@Harrys-Mac-mini git-journey % git add --all
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   myFolder/three.txt
+	modified:   one.txt
+	modified:   two.txt
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    two.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.DS_Store
+	four.txt
+
+harryra@Harrys-Mac-mini git-journey % git add *
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	new file:   four.txt
+	new file:   myFolder/three.txt
+	modified:   one.txt
+	modified:   two.txt
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    two.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.DS_Store
 ```
