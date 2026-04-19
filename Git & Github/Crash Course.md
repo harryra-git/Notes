@@ -509,3 +509,141 @@ f1af3f0 Add one.txt with initial content 'one'
 
 ## Git Branching Explained
 **Branch:** separate line of development where you can work independently
+ * **main:** default branch; called "master" before; this is where all work begins; project's central line of development
+
+*note:* a new branch inherits the current state of the branch you are in
+
+Branching allows users to have a **secure** and **organized** area to
+ * **review**
+ * **test**
+ * and **manage**
+ 
+ changes before merging to the main codebase
+
+**Merge:** combining the changes from two branches into one
+
+Examples or branches are:
+ * staging
+ * development
+ * frontend
+ * backend
+
+### To see how many branches you have (git branch)
+```bash
+git branch
+* main
+```
+
+### To create a new branch
+```bash
+git branch [branchName]
+git branch development ## sample
+git branch
+  development
+* main ## * shows in what branch you currently are
+```
+
+### To move to a different branch
+```bash
+git checkout [branchName]
+git checkout development ## sample
+Switched to branch 'development'
+```
+
+### To move to a specific version
+```bash
+git log --oneline
+## copy the commitID of the version you with to go back to
+git checkout [commitID]
+## to go back to the original version
+git checkout main
+```
+
+## Merging Branches (git merge)
+```bash
+git merge [branchName] -m "[Insert message here]"
+## sample
+git checkout main ## goes to main branch
+## edit four.txt to add "4" as a new line
+git add . ## move to staging
+git commit -m "I changed four.txt and added additional 4" ## commit to main
+1 file changed, 2 insertions(+), 1 deletion(-)
+## move to development branch
+git checkout development
+## merge main contents with development branch
+git merge main -m "Merging main into development"
+Merge made by the 'ort' strategy.
+ four.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+## move back to main branch
+git checkout main
+## merge development branch with main
+git merge development -m "Merging on main with development"
+Updating 3fb5b22..7f2aa5d
+Fast-forward (no commit created; -m option ignored)
+ three.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 three.txt
+## the updated four.txt and newly created three.txt should appear in the git-journey folder
+```
+
+**Merge Conflict:** same part of the same file has been changed differently in two branches
+ * decide which version to keep or;
+ * merging both versions yourself
+
+
+(e.g
+ * main branch: one.txt ```var topic = "React"```
+ * development branch: one.txt ```var topic = "Javascript"```
+ 
+ )
+
+## Comparing Commits with one another (git diff)
+To know which commands are added or deleted (newer commitID first before older commitID)
+```
+git log --oneline
+ccb04af (HEAD -> main) update one.txt file
+80200f5 (staging, development) Merge conflict solve
+74b5423 changed 444 on four.txt
+3ab0fc4 changed 44
+7f2aa5d Merging main into development
+3fb5b22 I changed four.txt and added additional 4
+df568c2 I created three.txt and entered three there
+bd45d32 I have made some changes to the files
+41d0f8d (origin/main, origin/HEAD) Add two.txt with initial content 'two'
+f1af3f0 Add one.txt with initial content 'one'
+harryra@Harrys-Mac-mini git-journey % git diff ccb04af 80200f5
+diff --git a/one.txt b/one.txt
+index e0e45e2..19e5830 100644
+--- a/one.txt
++++ b/one.txt
+@@ -1,2 +1,2 @@
+ one
+-Hello
+\ No newline at end of file
++1
+\ No newline at end of file
+harryra@Harrys-Mac-mini git-journey % 
+```
+**Push:** ```git push``` - sending changes to the remote repository (GitHub)
+
+**Fetch:** ```git fetch``` - any changes in the remote repository you want to bring to local repository (remote changes are downloaded into your local repositories memory **but wont appear in the working directory yet**)
+
+**Pull:** ```git pull``` - to bring the remote changes to the working directory
+ * PULL = FETCH + MERGE
+
+ ```bash
+ ## Pushing to GitHub
+ ## main
+ git checkout main
+ git push origin main
+ ## enter email and classic token when prompted
+ ## staging
+ git checkout staging
+ git push origin staging
+ ## development
+ git checkout development
+ git push origin development
+ ```
+
+ 
