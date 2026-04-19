@@ -201,6 +201,8 @@ this command takes us back to the Desktop/Root Folder
    this highlights that **one.txt** has been modified
 
 ## Staging Changes (git add and git reset)
+Phase where you can review, adjust, and remove changes before permanently applying to the main branch
+
 **Adding:** The process of moving changes from the working directory to the staging area
 
 **Move everything to the staging area**
@@ -237,7 +239,11 @@ git add [folderName]/[filename].txt //file under a folder
 
 **Remove from the staging area and return to working directory**
 ```bash
+## This does not bring back deleted files; only resets from staging area
 git reset
+
+## to restore everything even deleted files
+git reset --hard
 ```
 
 **Sample (git add -all and git reset) using git-journey**
@@ -393,3 +399,113 @@ Untracked files:
   (use "git add <file>..." to include in what will be committed)
 	.DS_Store
 ```
+
+## Saving Changes Permanently (git commit)
+
+**Commit:** confirming and saving changes permanently
+
+```bash
+git commit -m "I have made some changes to the files"
+[main 19c8c14] I have made some changes to the files
+ Committer: Harry Aquino <harryra@Harrys-Mac-mini.local>
+ 5 files changed, 3 insertions(+), 1 deletion(-)
+ create mode 100644 .DS_Store
+ create mode 100644 four.txt
+ create mode 100644 myFolder/three.txt
+ delete mode 100644 two.txt
+
+git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+```
+
+### Add Git Identification
+In order for git to track who made the changes
+```bash
+## Your email
+git config --global user.email "you@example.com"
+## Your name
+git config --global user.name "Your Name"
+
+##To save to a particular repository
+git config --local user.email "you@example.com"
+```
+
+## To rollback changes to working directory (git reset)
+```bash
+git reset HEAD~
+Unstaged changes after reset:
+M	one.txt
+D	two.txt
+harryra@Harrys-Mac-mini git-journey % git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   one.txt
+	deleted:    two.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.DS_Store
+	four.txt
+	myFolder/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+## Automatically delete a file and stage changes (git rm)
+```bash
+git rm [filename.extension]
+
+## to delete a modified files which has not been committed yet
+git rm -f [filename.extension] ##f = force
+git rm -f four.txt ##sample
+
+## removes a modified file in the staging area but keeps it in working directory
+git rm --cached [filename.extension]
+
+##sample - changed four.txt contents to say "Hello" instead of "four"
+git rm --cached four.txt
+
+## recursive - removes the folder and other subfolders or files recursively
+git rm -r <Folder>
+
+## if "-r" is not included, then only the mentioned folder will be removed
+git rm <Folder>
+```
+
+## Reviewing Commit History (git log)
+```bash
+## long random strings are commit IDs
+git log
+commit bd45d32f02f458413fa47b01832848d64c514f2b (HEAD -> main)
+Author: Harry Aquino <harryra@Harrys-Mac-mini.local>
+Date:   Sun Apr 19 22:19:35 2026 +0800
+
+    I have made some changes to the files
+
+commit 41d0f8d055d7ecbfc2c89fd138e349242780f105 (origin/main, origin/HEAD)
+Author: Harry Aquino <aquinoharryr@gmail.com>
+Date:   Sat Apr 18 10:59:26 2026 +0800
+
+    Add two.txt with initial content 'two'
+
+commit f1af3f045f08a35a9d67c8e623df2156fee5294f
+Author: Harry Aquino <aquinoharryr@gmail.com>
+Date:   Sat Apr 18 10:58:52 2026 +0800
+
+    Add one.txt with initial content 'one'
+
+git log --oneline ##cleaner view of commit summary
+bd45d32 (HEAD -> main) I have made some changes to the files
+41d0f8d (origin/main, origin/HEAD) Add two.txt with initial content 'two'
+f1af3f0 Add one.txt with initial content 'one'
+```
+
+## Git Branching Explained
+**Branch:** separate line of development where you can work independently
